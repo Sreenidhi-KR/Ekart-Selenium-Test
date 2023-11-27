@@ -54,8 +54,8 @@ public class SeleniumTests {
         driver.findElement(By.id("registerButton")).click();
 
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement checkbox = driver.findElement(By.id("age"));
-        js.executeScript("arguments[0].setAttribute('type', 'text')", checkbox);
+        WebElement age = driver.findElement(By.id("age"));
+        js.executeScript("arguments[0].setAttribute('type', 'text')", age);
 
 
         driver.findElement(By.id("username")).sendKeys("username1");
@@ -102,6 +102,30 @@ public class SeleniumTests {
         //RESULT  REDIRECT TO USER HOME PAGE
         Thread.sleep(5000);
     }
+
+    @Test(priority = 5)
+    public void bypassValidRange() throws InterruptedException {
+        System.setProperty("webdriver.chrome.driver",
+                driverPath);
+        driver= new ChromeDriver();
+        driver.get(baseUrl);
+        driver.findElement(By.id("registerButton")).click();
+
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        WebElement age = driver.findElement(By.id("age"));
+        js.executeScript("arguments[0].removeAttribute('min')", age);
+
+        driver.findElement(By.id("username")).sendKeys("username10");
+        driver.findElement(By.id("password")).sendKeys("123456789");
+        //MODIFY numeric data type to String
+        driver.findElement(By.id("age")).sendKeys("10");
+        //RESULT server gives an error
+        driver.findElement(By.id("submitButton")).click();
+
+        Thread.sleep(5000);
+        System.out.println("Done");
+    }
+
 
 
 
